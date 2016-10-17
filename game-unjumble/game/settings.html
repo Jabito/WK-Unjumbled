@@ -1,0 +1,106 @@
+
+<script type="text/plain" id="options-ui">
+    <div class="form-group  ">
+        <label for="level" class="control-label">
+            <label for="numballs">{{labels.difficulty}}</label>
+        </label>
+        <select id="level" value="0" class="form-control">
+            <option value="0">-select level-</option>
+            <option value="1">Easy</option>
+            <option value="2">Skilled</option>
+            <option value="3">Genius</option>
+            <option value="4">Mad Scientist</option>
+        </select>
+        <p class="errmsg" id="errlevel" class="help-block"></p>
+    </div>
+
+    <div class="form-group  ">
+        <label for="numballs" class="control-label">
+            <label for="numballs">{{labels.numballs}}</label>
+        </label>
+        <input type="textbox" readonly="true" 
+            id="numballs" value="{{vals.numballs}}" class="form-control"/>
+    </div>
+</script>
+
+<script type="text/javascript">
+    var settings = {};
+
+    settings.language =  'en-US';
+    settings.labels = {
+        'en-US':{
+           'difficulty': 'Level',
+           'numballs' : 'Number of Balls',
+        }
+    };
+    settings.msg = {
+        'en-US':{
+            'errSelect': 'Please select a level.'
+        }
+    };
+
+    settings.AfterRenderUI = function(language, values)
+    {
+        // event and  hooks
+        var selChanged = function(){
+            $('#errlevel').text('');
+            var selVal = parseInt($('#level option:selected').attr('value'));
+
+            var numBalls = 4;
+            if (selVal == 2)
+            {
+                numBalls = 6
+            }
+            if (selVal == 3)
+            {
+                numBalls = 8
+            }
+            if (selVal == 4)
+            {
+                numBalls = 12
+            }
+            $('#numballs').val(numBalls);
+
+        };
+
+        $('#level').on('change',selChanged);
+
+       var selVal = parseInt($('#level option:selected').attr('value'));
+       if (isNaN(selVal) || selVal == 0)
+       {
+            $('#level').val(1);
+            selChanged();
+       }
+
+    };
+
+    settings.Validate = function()
+    {
+        var msg = settings.msg[settings.language];
+
+        var isOk = true;
+        var selVal = parseInt($('#level option:selected').attr('value'));
+        if (isNaN(selVal))
+        {
+            selVal = 0;
+        }
+        if (selVal == 0)
+        {
+            var isOk = false;
+            $('#errlevel').text(msg['errSelect']);
+        }
+        return isOk;
+    };
+
+    settings.GatherValues = function()
+    {
+        // called before saving the settings
+        var options = {
+            'level' : $('#level').val(),
+            'numballs' : $('#numballs').val()
+        };
+        return options;
+    };
+
+</script>
+
