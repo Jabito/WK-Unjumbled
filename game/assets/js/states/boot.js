@@ -1,8 +1,8 @@
 Game.Boot = {
 	init: function(){
     console.log('Wingaru Integration', wingaru);
-    this.game.stage.backgroundColor = '#F00';
-    var gameId = 'au.com.wingaru.template';
+    this.game.stage.backgroundColor = '#CCC';
+    var gameId = 'au.com.wingaru.unjumble';
 
     wingaru.games.on.callInitialized(gameId, function(res) {
         console.log('Phaser Init', res);
@@ -18,6 +18,6 @@ Game.Boot = {
 	},
 
 	create: function() {
-
+        this.game.state.start('Preload');
 	}
 };
