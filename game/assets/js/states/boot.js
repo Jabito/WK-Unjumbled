@@ -1,7 +1,6 @@
 Game.Boot = {
 	init: function(){
     console.log('Wingaru Integration', wingaru);
-    this.game.stage.backgroundColor = '#CCC';
     var gameId = 'au.com.wingaru.unjumble';
 
     wingaru.games.on.callInitialized(gameId, function(res) {
