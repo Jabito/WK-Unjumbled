@@ -1,26 +1,28 @@
-  'use strict';
+    'use strict';
 
 
-  Game.Unjumble = {
-    areaWidth: 800,
-    areaHeight: 400,
-    startHeight: 120,
-    question:{word: 'Witchetty Grub', image_uri: 'grub'},
-  correctWord: [], //Store correct order of Letters here
-  shuffledWord: [], //Here is the array of shuffled letters
-  answers: [], //Store Empty(To be replaced) Tiles here
-  selections: [], //Stores Selection Tiles here
-  verify: [], //Add verification tiles here
-  startCoordsX: [], //Stores start X Coordinates of Selection Letters
-  startCoordsY: [], //Stores start Y Coordinates of Selection Letters
-  isDrag: false,
+    Game.Unjumble = {
+      areaWidth: 800,
+      areaHeight: 400,
+      startHeight: 120,
+      question:{word: 'Witchetty Grub', image_uri: 'grub'},
+      correctWord: [], //Store correct order of Letters here
+      shuffledWord: [], //Here is the array of shuffled letters
+      answers: [], //Store Empty(To be replaced) Tiles here
+      selections: [], //Stores Selection Tiles here
+      verify: [], //Add verification tiles here
+      startCoordsX: [], //Stores start X Coordinates of Selection Letters
+      startCoordsY: [], //Stores start Y Coordinates of Selection Letters
+      isDrag: false,
+      quesAudioEnabled: false,
+      quesAudioIcon: null,
 
-  init: function() {
-    wingaru.games.on.callInitialized('au.com.wingaru.unjumble', this.initialize);
-  },
+      init: function() {
+        wingaru.games.on.callInitialized('au.com.wingaru.unjumble', this.initialize);
+      },
 
-  initialize: function(res) {
-    console.log('Initialize', res);
+      initialize: function(res) {
+        console.log('Initialize', res);
     // if (typeof(res.data)!='undefined') {
     //   Game.Quiz.type = res.data.type;
     //   Game.Quiz.options = res.data.options;
@@ -53,66 +55,70 @@
     update: function(){
 
     },
-  //Initializes common variables that will be removed on deployment
-  initializeQuiz: function(){
-    var green = this.game.add.image(this.game.world.centerX, this.game.world.height * 0.93, 'green');
-    green.anchor.setTo(0.5);
-    var kangaroo = this.game.add.image(10,0, 'kangaroo');
-    kangaroo.scale.set(0.8);
-    var home = this.game.add.image(this.game.world.centerX * 0.15, this.game.world.height * 0.935, 'home');
-    home.anchor.setTo(0.5);
-    var next = this.game.add.image(this.game.world.width * 0.93, this.game.world.height * 0.93, 'next');
-    next.anchor.setTo(0.5);
-    next.scale.set(0.15);
-    next.inputEnabled = true;
-    next.events.onInputDown.add(function(){
-      this.checkAnswer();
-    }, this);
-  },
-  //Generates the question box at the top
-  generateQuestion: function(text){
-    var questionBox = this.game.add.image(this.game.world.centerX, this.game.world.centerY * 0.25, 'question');
-    questionBox.anchor.setTo(0.5);
-    var questionAudio = this.game.add.image(questionBox.x + questionBox.width * 0.45, questionBox.y + questionBox.height * 0.2, 'audio');
-    questionAudio.anchor.setTo(0.5);
-    var questionIcon = this.game.add.image(questionBox.x + questionBox.width * 0.36, questionBox.y + questionBox.height * 0.2, 'icon');
-    questionIcon.anchor.setTo(0.5);
+    //Initializes common variables that will be removed on deployment
+    initializeQuiz: function(){
+      var green = this.game.add.image(this.game.world.centerX, this.game.world.height * 0.93, 'green');
+      green.anchor.setTo(0.5);
+      var kangaroo = this.game.add.image(10,0, 'kangaroo');
+      kangaroo.scale.set(0.8);
+      var home = this.game.add.image(this.game.world.centerX * 0.15, this.game.world.height * 0.935, 'home');
+      home.anchor.setTo(0.5);
+      var next = this.game.add.image(this.game.world.width * 0.93, this.game.world.height * 0.93, 'next');
+      next.anchor.setTo(0.5);
+      next.scale.set(0.15);
+      next.inputEnabled = true;
+      next.events.onInputDown.add(function(){
+        this.checkAnswer();
+      }, this);
+    },
+    //Generates the question box at the top
+    generateQuestion: function(text){
+      var questionBox = this.game.add.image(this.game.world.centerX, this.game.world.centerY * 0.25, 'question');
+      questionBox.anchor.setTo(0.5);
+      var questionAudio = this.game.add.image(questionBox.x + questionBox.width * 0.45, questionBox.y + questionBox.height * 0.2, 'audio');
+      questionAudio.anchor.setTo(0.5);
+      var questionIcon = this.game.add.image(questionBox.x + questionBox.width * 0.36, questionBox.y + questionBox.height * 0.2, 'icon');
+      questionIcon.anchor.setTo(0.5);
 
-    var style = {font: '24px Arial', fill: '#FFF', wordWrap: true, wordWrapWidth: questionBox.width * 0.6, align: 'center'};
-    var question = this.game.add.text(questionBox.x, questionBox.y, 'Find the name of this bush tucker item.', style);
-    question.anchor.setTo(0.5);
-  },
-  //Generates the layout design of the module
-  generateFrames: function(){
-    var wholeContainer = this.game.add.image(this.game.world.centerX, this.game.world.centerY + this.game.world.height * 0.025, 'container');
-    wholeContainer.anchor.setTo(0.5);
-    wholeContainer.scale.set(1, 0.75);
+      var style = {font: '24px Arial', fill: '#FFF', wordWrap: true, wordWrapWidth: questionBox.width * 0.6, align: 'center'};
+      var question = this.game.add.text(questionBox.x, questionBox.y, 'Find the name of this bush tucker item.', style);
+      question.anchor.setTo(0.5);
+    },
+    //Generates the layout design of the module
+    generateFrames: function(){
+      var wholeContainer = this.game.add.image(this.game.world.centerX, this.game.world.centerY + this.game.world.height * 0.025, 'container');
+      wholeContainer.anchor.setTo(0.5);
+      wholeContainer.scale.set(1, 0.75);
 
-    var imageContainer = this.game.add.image(this.game.world.centerX, this.game.world.centerY - this.game.world.height * 0.1, 'imageContainer');
-    imageContainer.anchor.setTo(0.5);
-    imageContainer.scale.set(0.8);
+      var imageContainer = this.game.add.image(this.game.world.centerX, this.game.world.centerY - this.game.world.height * 0.1, 'imageContainer');
+      imageContainer.anchor.setTo(0.5);
+      imageContainer.scale.set(0.8);
 
-    var selections = this.game.add.image(this.game.world.centerX, this.game.world.height * 0.69, 'pinkbar');
-    selections.anchor.setTo(0.5);
-    selections.scale.set(1, 0.9);
+      var selections = this.game.add.image(this.game.world.centerX, this.game.world.height * 0.69, 'pinkbar');
+      selections.anchor.setTo(0.5);
+      selections.scale.set(1, 0.9);
 
-    var image = this.game.add.image(imageContainer.x, imageContainer.y, this.question.image_uri);
-    image.anchor.setTo(0.5);
-    this.generateAnswerTiles(selections);
-  },
-  //Generates the entire answer area
-  generateAnswerTiles: function(selections){
-    var shuffle = this.game.add.image(selections.x + selections.width * 0.42, selections.y + selections.height * 0.22, 'shuffle');
-    shuffle.anchor.setTo(0.5);
-    shuffle.inputEnabled = true;
-    shuffle.events.onInputDown.add(this.shuffleSelections, this);
+      var image = this.game.add.image(imageContainer.x, imageContainer.y, this.question.image_uri);
+      image.anchor.setTo(0.5);
+      this.generateAnswerTiles(selections);
+    },
+    //Generates the entire answer area
+    generateAnswerTiles: function(selections){
+      var shuffle = this.game.add.image(selections.x + selections.width * 0.42, selections.y + selections.height * 0.22, 'shuffle');
+      shuffle.anchor.setTo(0.5);
+      shuffle.inputEnabled = true;
+      shuffle.events.onInputDown.add(this.shuffleSelections, this);
 
-    var audio = this.game.add.image(selections.x - selections.width * 0.42, selections.y + selections.height * 0.22, 'audio');
-    audio.anchor.setTo(0.5);
+      this.quesAudioIcon = this.game.add.image(selections.x - selections.width * 0.42, selections.y + selections.height * 0.22, 'audio');
+      this.quesAudioIcon.anchor.setTo(0.5);
+      this.quesAudioIcon.inputEnabled = true;
+      this.quesAudioIcon.alpha = 0;
 
-    var wordCaps = this.question.word.toUpperCase();
-    this.shuffledWord = wordCaps.split('');
-    this.correctWord = wordCaps.split('');
+      this.quesAudioIcon.events.onInputDown.add(this.questionAudio, this);
+
+      var wordCaps = this.question.word.toUpperCase();
+      this.shuffledWord = wordCaps.split('');
+      this.correctWord = wordCaps.split('');
     //Removes blank spaces in the array of letters on first invoke
     for(var x=0; x<this.shuffledWord.length; x++){
       if(this.shuffledWord[x] === ' '){
@@ -164,32 +170,32 @@
       tile.addChild(letter);
     }
   },
-  //Shuffles an array of letters
-  shuffleLetters: function(letters){
+    //Shuffles an array of letters
+    shuffleLetters: function(letters){
 
-    for(var x = letters.length-1; x>0; x--){
-      var y = Math.floor(Math.random() * (x+1));
-      var temp = letters[x];
-      letters[x] = letters[y];
-      letters[y] = temp;
-    }
-    return letters;
-  },
-  //Put all click and drag selections here
-  selectItem: function(item){
-    var alreadySelected = false;
-    var index = -1;
-    for(var z=0; z<this.answers.length; z++){
-      if(this.answers[z].children.length > 0)
-        if(this.answers[z].children[0].name == item.name)
-        {
-          console.log('Item already in answer area');
-          alreadySelected = true;
-          index = z;
-        }
+      for(var x = letters.length-1; x>0; x--){
+        var y = Math.floor(Math.random() * (x+1));
+        var temp = letters[x];
+        letters[x] = letters[y];
+        letters[y] = temp;
       }
+      return letters;
+    },
+    //Put all click and drag selections here
+    selectItem: function(item){
+      var alreadySelected = false;
+      var index = -1;
+      for(var z=0; z<this.answers.length; z++){
+        if(this.answers[z].children.length > 0)
+          if(this.answers[z].children[0].name == item.name)
+          {
+            console.log('Item already in answer area');
+            alreadySelected = true;
+            index = z;
+          }
+        }
 
-      console.log(this.answers[0]);
+        console.log(this.answers[0]);
     //Check if object is dragged from original position or clicked
     var origX = this.startCoordsX[item.name];
     var origY = this.startCoordsY[item.name];
@@ -290,8 +296,8 @@
           console.log(this.answers[index]);
         }
       }
-  //** ON CLICK EVENT **
-}else{    
+    //** ON CLICK EVENT **
+  }else{    
     //If it is in the selections area
     if(!alreadySelected){
       console.log('First selection');
@@ -325,51 +331,59 @@
 }
 this.isDrag = false;
 },
-  //This logs the startCoordinates of the selection tiles
-  logCoords: function(item){
-    this.startCoordsX.push(item.x);
-    this.startCoordsY.push(item.y);
-  },
-  //Checks if two sprites collide, returns a boolean
-  checkOverlap: function(spriteA, spriteB){
-    var boundsA = spriteA.getBounds();
-    var boundsB = spriteB.getBounds();
+    //This logs the startCoordinates of the selection tiles
+    logCoords: function(item){
+      this.startCoordsX.push(item.x);
+      this.startCoordsY.push(item.y);
+    },
+    //Checks if two sprites collide, returns a boolean
+    checkOverlap: function(spriteA, spriteB){
+      var boundsA = spriteA.getBounds();
+      var boundsB = spriteB.getBounds();
 
-    return Phaser.Rectangle.intersects(boundsA, boundsB);
-  },
+      return Phaser.Rectangle.intersects(boundsA, boundsB);
+    },
 
-  checkAnswer: function(){
-    console.log(this.answers);
-    var isCorrect = true;
-    var isComplete = true;
-    for(var x=0; x<this.answers.length; x++){
-      if(this.answers[x].children.length > 0){
-        if(this.answers[x].children[0].children[0].text != this.correctWord[x]){
-          this.verify[x].fill = '#F00';
-          isCorrect = false;
+    checkAnswer: function(){
+      console.log(this.answers);
+      var isCorrect = true;
+      var isComplete = true;
+      for(var x=0; x<this.answers.length; x++){
+        if(this.answers[x].children.length > 0){
+          if(this.answers[x].children[0].children[0].text != this.correctWord[x]){
+            this.verify[x].fill = '#F00';
+            isCorrect = false;
+          }
+          this.verify[x].alpha = 1;
+        }else{
+          isComplete = false;
+          break;
         }
-        this.verify[x].alpha = 1;
-      }else{
-        isComplete = false;
-        break;
       }
-    }
 
-    if(isComplete){
-      if(isCorrect){
-        var style = {font: '24px Arial', fill: '#FFF', align: 'center'};
-        var question = this.game.add.text(this.game.world.centerX-50, this.game.world.centerY, 'Correct!!!', style);
+      if(isComplete){
+        this.quesAudioEnabled = true;
+        this.quesAudioIcon.alpha = 1;
+        if(isCorrect){
+          var style = {font: '24px Arial', fill: '#FFF', align: 'center'};
+          var question = this.game.add.text(this.game.world.centerX-50, this.game.world.centerY, 'Correct!!!', style);
+        }else{
+          var style = {font: '24px Arial', fill: '#FFF', align: 'center'};
+          var question = this.game.add.text(this.game.world.centerX-50, this.game.world.centerY, 'Incorrect.', style);
+        }
       }else{
-        var style = {font: '24px Arial', fill: '#FFF', align: 'center'};
-        var question = this.game.add.text(this.game.world.centerX-50, this.game.world.centerY, 'Incorrect.', style);
+        console.log('Answer Incomplete. Please fill out all the boxes.');
       }
-    }else{
-      console.log('Answer Incomplete. Please fill out all the boxes.');
-    }
-  },
+    },
 
-  shuffleSelections: function(){
-    var excluded = [];
+    questionAudio: function(){
+      if(this.quesAudioEnabled){
+        responsiveVoice.speak(this.question.word);
+      }
+    },
+
+    shuffleSelections: function(){
+      var excluded = [];
     //Add tiles that are already in the answer area
     for(var z=0; z<this.selections.length; z++){
       console.log(this.selections[z].parent.length);
@@ -414,16 +428,5 @@ this.isDrag = false;
         }
       }
     }
-    
-    console.log(this.selections[0]);
-    console.log("Done shuffling");
-
-    /*for(var x = letters.length-1; x>0; x--){
-      var y = Math.floor(Math.random() * (x+1));
-      var temp = letters[x];
-      letters[x] = letters[y];
-      letters[y] = temp;
-    }
-    return letters;*/
   }
 };

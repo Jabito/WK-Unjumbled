@@ -1,9 +1,9 @@
 {
-  "name" : "Template Wingaru Kids Game",
-  "id" : "au.com.wingaru.template",
-  "short_name" : "Template Game",
+  "name" : "Wingaru Unjumble Game",
+  "id" : "au.com.wingaru.unjumble",
+  "short_name" : "Unjumble Game",
   "version" : "1.0",
-  "description" : "Game Description",
+  "description" : "Wingaru Unjumble Quiz Game",
   "start_url" : "./index.html",
   "display" : "browser",
   "orientation" : "portrait",
@@ -22,12 +22,12 @@
   },
   {
     "platform": "play",
-    "url": "https://play.google.com/store/apps/details?id=au.com.wingaru.template",
-    "id": "au.com.wingaru.template"
+    "url": "https://play.google.com/store/apps/details?id=au.com.wingaru.unjumble",
+    "id": "au.com.wingaru.unjumble"
   }],
   "author":{
-    "name" : "Company or Developer Name",
-    "email" : "email@company.com",
+    "name" : "Paolo Javier",
+    "email" : "paolo.javier@wingaru.com.au",
     "website" : "http://to.your.website"
   }
 }
